@@ -1,1 +1,70 @@
 
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+std::string calculateFLAMES(const std::string& name1, const std::string& name2) {
+    std::string modifiedName1 = name1;
+    std::string modifiedName2 = name2;
+
+    // Convert names to lowercase and remove spaces
+    std::transform(modifiedName1.begin(), modifiedName1.end(), modifiedName1.begin(), ::tolower);
+    std::transform(modifiedName2.begin(), modifiedName2.end(), modifiedName2.begin(), ::tolower);
+    modifiedName1.erase(std::remove(modifiedName1.begin(), modifiedName1.end(), ' '), modifiedName1.end());
+    modifiedName2.erase(std::remove(modifiedName2.begin(), modifiedName2.end(), ' '), modifiedName2.end());
+
+    // Eliminate common characters
+    for (size_t i = 0; i < modifiedName1.size(); ++i) {
+        for (size_t j = 0; j < modifiedName2.size(); ++j) {
+            if (modifiedName1[i] == modifiedName2[j]) {
+                modifiedName1[i] = '_';
+                modifiedName2[j] = '_';
+                break;
+            }
+        }
+    }
+
+    // Count remaining characters
+    int count = std::count(modifiedName1.begin(), modifiedName1.end(), '_') +
+                std::count(modifiedName2.begin(), modifiedName2.end(), '_');
+
+    // FLAMES calculation
+    std::string result = "FLAMES";
+    while (result.size() > 1) {
+        int index = (count % result.size()) - 1;
+        if (index < 0)
+            index = result.size() - 1;
+        result.erase(index, 1);
+    }
+
+    // Interpret result
+    switch (result[0]) {
+        case 'F':
+            return "Friendship";
+        case 'L':
+            return "Love";
+        case 'A':
+            return "Affection";
+        case 'M':
+            return "Marriage";
+        case 'E':
+            return "Enemies";
+        case 'S':
+            return "Siblings";
+        default:
+            return "Unknown";
+    }
+}
+
+int main() {
+    std::string name1, name2;
+    std::cout << "Enter Name 1: ";
+    std::getline(std::cin, name1);
+    std::cout << "Enter Name 2: ";
+    std::getline(std::cin, name2);
+
+    std::string relationship = calculateFLAMES(name1, name2);
+    std::cout << "Relationship: " << relationship << std::endl;
+
+    return 0;
+}
