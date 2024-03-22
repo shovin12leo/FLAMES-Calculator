@@ -1,1 +1,38 @@
+def calculate_FLAMES(name1, name2):
+    name1 = name1.lower().replace(" ", "")
+    name2 = name2.lower().replace(" ", "")
+    name1_arr = list(name1)
+    name2_arr = list(name2)
 
+    for i in range(len(name1)):
+        for j in range(len(name2)):
+            if name1_arr[i] == name2_arr[j]:
+                name1_arr[i] = '_'
+                name2_arr[j] = '_'
+                break
+
+    count = len([char for char in name1_arr + name2_arr if char != '_'])
+    result = ['F', 'L', 'A', 'M', 'E', 'S']
+    while len(result) > 1:
+        index = (count % len(result)) - 1
+        if index >= 0:
+            result.pop(index)
+        else:
+            result.pop(-1)
+
+    flames_result = {
+        'F': 'Friendship',
+        'L': 'Love',
+        'A': 'Affection',
+        'M': 'Marriage',
+        'E': 'Enemies',
+        'S': 'Siblings'
+    }
+
+    return flames_result[result[0]]
+
+
+name1 = input("Enter Name 1: ")
+name2 = input("Enter Name 2: ")
+relationship = calculate_FLAMES(name1, name2)
+print("Relationship:", relationship)
