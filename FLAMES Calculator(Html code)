@@ -1,1 +1,56 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FLAMES Calculator</title>
+</head>
+<body>
+  <h1>FLAMES Calculator</h1>
+  <label for="name1">Enter Name 1:</label>
+  <input id="name1" type="text" />
+  <label for="name2">Enter Name 2:</label>
+  <input id="name2" type="text" />
+  <button onclick="calculateFLAMES()">Calculate</button>
+  <p id="flamesResult"></p>
+  <script>
+    function calculateFLAMES() {
+      const name1 = document.getElementById('name1').value.toLowerCase().replace(/\s/g, '');
+      const name2 = document.getElementById('name2').value.toLowerCase().replace(/\s/g, '');
+      let name1Arr = name1.split('');
+      let name2Arr = name2.split('');
+      
+      for (let i = 0; i < name1.length; i++) {
+        for (let j = 0; j < name2.length; j++) {
+          if (name1Arr[i] === name2Arr[j]) {
+            name1Arr[i] = '_';
+            name2Arr[j] = '_';
+            break;
+          }
+        }
+      }
+
+      const count = name1Arr.concat(name2Arr).filter(char => char !== '_').length;
+      const result = ['F', 'L', 'A', 'M', 'E', 'S'];
+      while (result.length > 1) {
+        const index = (count % result.length) - 1;
+        if (index >= 0) {
+          result.splice(index, 1);
+        } else {
+          result.splice(result.length - 1, 1);
+        }
+      }
+      
+      const flamesResult = {
+        'F': 'Friendship',
+        'L': 'Love',
+        'A': 'Affection',
+        'M': 'Marriage',
+        'E': 'Enemies',
+        'S': 'Siblings'
+      };
+      
+      document.getElementById('flamesResult').innerText = `Relationship: ${flamesResult[result[0]]}`;
+    }
+  </script>
+</body>
+</html>
